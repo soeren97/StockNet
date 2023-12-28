@@ -30,11 +30,17 @@ jobs:
 
       - name: Run isort
         uses: isort/isort-action@master
+        with:
+          configuration: --profile black --filter-files
 
       - name: Run flake8
         uses: py-actions/flake8@v2
         with:
           ignore: F401
           args: "--verbose"
+
+      - name: Fail if autopep8 made changes
+        if: steps.autopep8.outputs.exit-code == 2
+        run: exit 1
       
 

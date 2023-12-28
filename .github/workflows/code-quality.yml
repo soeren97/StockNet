@@ -99,12 +99,10 @@ jobs:
           args: --exit-code --recursive --in-place --aggressive --aggressive .
 
       - name: Run isort
-        uses: PyCQA/isort@5.13.2
-        with:
-          args: "--check-only --verbose"
+        uses: isort/isort-action@master
 
       - name: Run flake8
-        uses: PyCQA/flake8@6.1.0
+        uses: py-actions/flake8@v2
         with:
           args: "--verbose"
       

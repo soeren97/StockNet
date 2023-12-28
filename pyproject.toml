@@ -23,6 +23,10 @@ versioneer = "^0.22"
 # Development dependencies
 [tool.poetry.dev-dependencies]
 # Add development dependencies here
+isort = "^5.12.0"
+black = "^23.3.0"
+flake8 = "^6.0.0"
+autopep8 = "^1.5.7"
 # Example: "pytest" = "^7.4.0"
 
 # Include additional project metadata, classifiers, etc.

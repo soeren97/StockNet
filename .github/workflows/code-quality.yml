@@ -94,17 +94,17 @@ jobs:
           version: "~= 23.0"
 
       - name: Run autopep8
-        uses: hhatto/autopep8@stable
+        uses: hhatto/autopep8@v2.0.4
         with:
           args: "--check --verbose"
 
       - name: Run isort
-        uses: PyCQA/isort@stable
+        uses: PyCQA/isort@5.13.2
         with:
           args: "--check-only --verbose"
 
       - name: Run flake8
-        uses: PyCQA/flake8@stable
+        uses: PyCQA/flake8@6.1.0
         with:
           args: "--verbose"
       

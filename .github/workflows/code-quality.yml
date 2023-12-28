@@ -26,7 +26,7 @@ jobs:
       - name: Run autopep8
         uses: peter-evans/autopep8@v2
         with:
-          args: --exit-code --recursive --in-place --aggressive --aggressive .
+          args: "--exit-code", "--recursive", "--in-place", "--aggressive", "--aggressive", "."
 
       - name: Run isort
         uses: isort/isort-action@master

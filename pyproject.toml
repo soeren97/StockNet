@@ -31,7 +31,7 @@ autopep8 = "^1.5.7"
 
 # Include additional project metadata, classifiers, etc.
 [tool.poetry]
-name = "your_project_name"
+name = "StockNet"
 version = "0.1.0"
 description = "Your project description"
 authors = ["Your Name <your.email@example.com>"]

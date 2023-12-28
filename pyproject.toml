@@ -6,7 +6,7 @@ name = "StockNet"
 version = "0.1.0"
 description = "Your project description"
 authors = ["Søren Langkilde <soeren@langkilde.com>, Jonathan Emil Aarup Pedersen <jona96@hotmail.com>"]
-edition = "2021"
+edition = "2023"
 
 # Build system information
 [build-system]

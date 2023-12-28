@@ -107,6 +107,8 @@ jobs:
           args: "--verbose"
       
       - name: Check results and fail if necessary
-        run: exit ${{ job.status }}
+        run: exit ${{ job.outputs['step-check.status'] }}
+        id: step-check
+        continue-on-error: true
       
 

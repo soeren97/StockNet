@@ -106,4 +106,7 @@ jobs:
         with:
           args: "--verbose"
       
+      - name: Check results and fail if necessary
+        run: exit ${{ job.status }}
+      
 

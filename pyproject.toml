@@ -40,6 +40,3 @@ authors = ["Your Name <your.email@example.com>"]
 # Define any extra dependencies here
 # Example: "dev" = ["pytest", "black"]
 
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"

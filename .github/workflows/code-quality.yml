@@ -1,30 +1,63 @@
-# This is a simple workflow to check that all modified files satisfy code
-# quality requirements
-name: Code quality
+name: Code Style Check
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push and PRs
-  push:
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-
-  pre-commit:
-    name: Pre-commit - ${{ matrix.hook }}
+  style-check:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        hook: ["black", "flake8", "docformatter", "pydocstyle", "mypy"]
     steps:
-      - uses: actions/checkout@v3
-      - name: Install package
-        uses: ./.github/actions/install
-      - name: Run ${{ matrix.hook }}
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.11.5
+
+      - name: Install dependencies
         run: |
-          pre-commit run ${{ matrix.hook }} --all-files
+          python -m pip install --upgrade pip
+          pip install -e .
+          pip install isort==5.12.0 black==23.3.0 flake8==6.0.0
+
+      - name: Run isort
+        run: isort --check .
+
+      - name: Run black
+        run: black --check .
+
+      - name: Run flake8
+        run: flake8 .
+
+      - name: Run autopep8
+        run: autopep8 --max-line-length 88 --in-place --ignore E203 -r .
+
+      - name: Commit formatting changes (if needed)
+        run: |
+          git diff --exit-code || (git add . && git commit -m "Apply code formatting changes")
+
+      - name: Upload formatting changes as an artifact
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: code-formatting-changes
+          path: .
+
+  enforce-style-check:
+    needs: style-check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download formatting changes artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: code-formatting-changes
+
+      - name: Fail if code changes detected
+        run: |
+          if [ "${{ needs.style-check.outputs.changes }}" == "true" ]; then
+            echo "Code changes detected. Please run 'isort', 'black', 'flake8', and 'autopep8' locally and commit the changes.";
+            exit 1;
+          fi

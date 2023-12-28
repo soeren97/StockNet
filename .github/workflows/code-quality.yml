@@ -1,6 +1,78 @@
+# name: Code Style Check
+
+# on:
+#   pull_request:
+#     branches:
+#       - main
+
+# jobs:
+#   style-check:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
+
+#       - name: Set up Python
+#         uses: actions/setup-python@v2
+#         with:
+#           python-version: 3.11.5
+
+#       - name: Install Poetry
+#         run: |
+#           curl -sSL https://install.python-poetry.org | python3 -
+#           export PATH=$HOME/.local/bin:$PATH
+
+#       - name: Install dependencies
+#         run: poetry install
+
+#       - name: Set up Poetry bin directory
+#         run: export PATH=$HOME/.poetry/bin:$PATH
+
+#       - name: Run isort
+#         run: poetry run isort --check .
+
+#       - name: Run black
+#         run: poetry run black --check .
+
+#       - name: Run flake8
+#         run: poetry run flake8 .
+
+#       - name: Run autopep8
+#         run: poetry run autopep8 --max-line-length 88 --in-place --ignore E203 -r .
+
+#       - name: Commit formatting changes (if needed)
+#         run: |
+#           git diff --exit-code || (git add . && git commit -m "Apply code formatting changes")
+
+#       - name: Upload formatting changes as an artifact
+#         if: always()
+#         uses: actions/upload-artifact@v2
+#         with:
+#           name: code-formatting-changes
+#           path: .
+
+#   enforce-style-check:
+#     needs: style-check
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Download formatting changes artifact
+#         uses: actions/download-artifact@v2
+#         with:
+#           name: code-formatting-changes
+
+#       - name: Fail if code changes detected
+#         run: |
+#           if [ "${{ needs.style-check.outputs.changes }}" == "true" ]; then
+#             echo "Code changes detected. Please run 'isort', 'black', 'flake8', and 'autopep8' locally and commit the changes.";
+#             exit 1;
+#           fi
+
 name: Code Style Check
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
     branches:
       - main
@@ -8,6 +80,7 @@ on:
 jobs:
   style-check:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -17,52 +90,20 @@ jobs:
         with:
           python-version: 3.11.5
 
-      - name: Install Poetry
-        run: |
-          curl -sSL https://install.python-poetry.org | python3 -
-          export PATH=$HOME/.local/bin:$PATH
-
       - name: Install dependencies
-        run: poetry install
-
-      - name: Set up Poetry bin directory
-        run: export PATH=$HOME/.poetry/bin:$PATH
-
-      - name: Run isort
-        run: poetry run isort --check .
+        run: python -m pip install --upgrade pip && pip install -e .[dev]
 
       - name: Run black
-        run: poetry run black --check .
+        run: black --check .
 
       - name: Run flake8
-        run: poetry run flake8 .
+        run: flake8 .
+
+      - name: Run mypy
+        run: mypy .
+
+      - name: Run isort
+        run: isort --check-only .
 
       - name: Run autopep8
-        run: poetry run autopep8 --max-line-length 88 --in-place --ignore E203 -r .
-
-      - name: Commit formatting changes (if needed)
-        run: |
-          git diff --exit-code || (git add . && git commit -m "Apply code formatting changes")
-
-      - name: Upload formatting changes as an artifact
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: code-formatting-changes
-          path: .
-
-  enforce-style-check:
-    needs: style-check
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download formatting changes artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: code-formatting-changes
-
-      - name: Fail if code changes detected
-        run: |
-          if [ "${{ needs.style-check.outputs.changes }}" == "true" ]; then
-            echo "Code changes detected. Please run 'isort', 'black', 'flake8', and 'autopep8' locally and commit the changes.";
-            exit 1;
-          fi
+        run: autopep8 --exit-code --max-line-length 88 --in-place --ignore E203 -r .

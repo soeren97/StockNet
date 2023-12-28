@@ -1,0 +1,45 @@
+# pyproject.toml
+
+# Project metadata
+[project]
+name = "StockNet"
+version = "0.1.0"
+description = "Your project description"
+authors = ["Søren Langkilde <soeren@langkilde.com>, Jonathan Emil Aarup Pedersen <jona96@hotmail.com>"]
+edition = "2021"
+
+# Build system information
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+# Dependencies
+[tool.poetry.dependencies]
+python = "^3.11"
+versioneer = "^0.22"
+# Add your project dependencies here
+# Example: "requests" = "^2.26.0"
+
+# Development dependencies
+[tool.poetry.dev-dependencies]
+# Add development dependencies here
+# Example: "pytest" = "^7.4.0"
+
+# Include additional project metadata, classifiers, etc.
+[tool.poetry]
+name = "your_project_name"
+version = "0.1.0"
+description = "Your project description"
+authors = ["Your Name <your.email@example.com>"]
+
+[tool.poetry.scripts]
+# Define any scripts or entry points here
+# Example: "your_script" = "your_module:main"
+
+[tool.poetry.extras]
+# Define any extra dependencies here
+# Example: "dev" = ["pytest", "black"]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

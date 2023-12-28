@@ -16,31 +16,30 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Run black
+      - name: black
         uses: psf/black@stable
         with:
           options: "--check --verbose"
           src: "./"
           version: "~= 23.0"
 
-      - name: Run autopep8
+      - name: autopep8
         uses: peter-evans/autopep8@v2
         with:
           args: --exit-code --recursive --in-place --aggressive --aggressive .
 
-      - name: Fail if autopep8 made changes
-        if: steps.autopep8.outputs.exit-code == 2
-        run: exit 1
-
-      - name: Run isort
+      - name: isort
         uses: isort/isort-action@master
         with:
           configuration: --profile black --filter-files
 
-      - name: Run flake8
+      - name: flake8
         uses: py-actions/flake8@v2
         with:
           ignore: F401
           args: "--verbose"
       
+      - name: Fail if autopep8 made changes
+        if: steps.autopep8.outputs.exit-code == 2
+        run: exit 1
 

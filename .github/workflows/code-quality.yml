@@ -94,9 +94,9 @@ jobs:
           version: "~= 23.0"
 
       - name: Run autopep8
-        uses: hhatto/autopep8@v2.0.4
+        uses: peter-evans/autopep8@v2
         with:
-          args: "--check --verbose"
+          args: --exit-code --recursive --in-place --aggressive --aggressive .
 
       - name: Run isort
         uses: PyCQA/isort@5.13.2

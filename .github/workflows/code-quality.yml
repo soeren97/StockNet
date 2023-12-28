@@ -25,6 +25,9 @@ jobs:
       - name: Install dependencies
         run: poetry install
 
+      - name: Set up Poetry bin directory
+        run: export PATH=$HOME/.poetry/bin:$PATH
+
       - name: Run isort
         run: poetry run isort --check .
 
